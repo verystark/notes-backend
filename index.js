@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const Note = require('./models/note')
+const config = require('./utils/config')
 
 const app = express()
 
@@ -29,9 +30,9 @@ app.get('/api/notes/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.delete('/api/notes/:id', (request, response) => {
+app.delete('/api/notes/:id', (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -45,7 +46,7 @@ app.post('/api/notes', (request, response, next) => {
     important: body.important || false
   })
 
-  note.save().then(savedNote => {
+  note.save().then(() => {
     response.json(note)
   })
     .catch(error => next(error))
@@ -90,7 +91,6 @@ const errorHandler = (error, request, response, next) => {
 app.use(errorHandler)
 
 
-const PORT = process.env.PORT
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+app.listen(config.PORT, () => {
+  console.log(`Server running on port ${config.PORT}`)
 })
