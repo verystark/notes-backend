@@ -13,9 +13,9 @@ describe('Note app', () => {
     await page.goto('http://localhost:5173')
 
     await page.getByRole('button', { name: 'login' }).click()
-    await page.getByRole('textbox').first().fill('mluukkai')
-    await page.getByRole('textbox').last().fill('salainen')
+    await page.getByLabel('username').fill('mluukkai')
+    await page.getByLabel('password').fill('salainen')
     await page.getByRole('button', { name: 'login' }).click()
-    await expect(page.getByText('Matti Luukkainen logged in')).toBeVisible()
+    await expect(page.getByText('logged in as Matti Luukkainen')).toBeVisible()
   })
 })
